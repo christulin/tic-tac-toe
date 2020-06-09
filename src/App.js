@@ -1,15 +1,13 @@
 import React from 'react';
-import './App.css';
+import { GameBoard } from './Components/GameBoard';
+
+import './Styles/GameBoard.css';
+import './Styles/Square.css'
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        
-        <p>
-          This will soon be a Tic-Tac-Toe game
-        </p>
-      </header>
+      <GameBoard/>
     </div>
   );
 }
