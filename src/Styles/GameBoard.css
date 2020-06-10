@@ -3,3 +3,11 @@
     display: flex;
     justify-content: center;
 }
+
+.board-row {
+    display: flex;
+}
+
+button {
+    font-size: 100px;
+}
