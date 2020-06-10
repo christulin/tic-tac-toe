@@ -1,13 +1,18 @@
-
 .board-wrapper {
-    display: flex;
-    justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .board-row {
-    display: flex;
+  display: flex;
 }
 
 button {
-    font-size: 100px;
+  font-size: 100px;
+}
+
+.hud {
+  margin-bottom: 25px;
 }
