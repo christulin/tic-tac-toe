@@ -1,17 +1,33 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Square from './Square';
 import * as utils from '../utils/functions';
+import CookieStorage from '../utils/CookieStorage';
+
+const SAVE_DATA_NAME = 'game:tic-tac-toe';
+const DEFAULT_SAVE_STATE = Array(9).fill('');
 
 export class GameBoard extends React.Component {
   constructor(props) {
     super(props);
+    const squareArray = this.getSaveData();
+    const isXNext = utils.isXNext(squareArray);
+    this.state = { squareArray, isXNext };
+  }
 
-    this.state = {
-      squareArray: Array(9).fill(null),
-      history: [],
-      xIsNext: true,
-    };
+  setSaveData(squares) {
+    CookieStorage.setCookie(SAVE_DATA_NAME, JSON.stringify(squares));
+  }
+
+  getSaveData() {
+    const SaveData = CookieStorage.getCookie(SAVE_DATA_NAME);
+    return SaveData === null ? DEFAULT_SAVE_STATE : JSON.parse(SaveData);
+  }
+
+  clearSaveData() {
+    CookieStorage.removeCookie(SAVE_DATA_NAME);
+    const squareArray = DEFAULT_SAVE_STATE;
+    const isXNext = utils.isXNext(squareArray);
+    this.setState({ squareArray, isXNext });
   }
 
   handleSquareClick(num) {
@@ -22,12 +38,15 @@ export class GameBoard extends React.Component {
       return;
     }
 
-    squares[num] = this.state.xIsNext ? 'x' : 'o';
+    squares[num] = this.state.isXNext ? 'x' : 'o';
 
-    this.setState({
-      squareArray: squares,
-      xIsNext: !this.state.xIsNext,
-    });
+    this.setState(
+      {
+        squareArray: squares,
+        isXNext: !this.state.isXNext,
+      },
+      this.setSaveData(squares),
+    );
 
     if (utils.checkForWinner(squares)) {
       return;
@@ -38,7 +57,8 @@ export class GameBoard extends React.Component {
     return (
       <div className="board-wrapper">
         <div className="hud">
-          <h3 className="turn-indicator">Current Player: {this.state.xIsNext ? 'X' : 'O'}</h3>
+          <h3 className="turn-indicator">Current Player: {this.state.isXNext ? 'X' : 'O'}</h3>
+          <button onClick={() => this.clearSaveData()}>Reset Game</button>
         </div>
         <div className="board">
           <div className="board-row">
