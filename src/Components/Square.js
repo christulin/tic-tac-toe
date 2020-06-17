@@ -1,8 +1,9 @@
 import React from 'react';
 
 const Square = (props) => {
+
     return (
-    <button className="square" onClick={props.onClick}>{props.value}</button>
+    <button type="button" autofocus={props.addFocus} className={props.class} onClick={props.onClick} onKeyDown={props.onKeyDown}>{props.value}</button>
     )
 }
 
