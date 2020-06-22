@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Square from './Square';
 import * as utils from '../utils/functions';
 
