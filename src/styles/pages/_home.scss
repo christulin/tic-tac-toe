@@ -10,9 +10,9 @@
 }
 
 button {
-  font-size: 100px;
+  font-size: ($base-spacing * 4);
 }
 
 .hud {
-  margin-bottom: 25px;
+  margin-bottom: $base-spacing;
 }

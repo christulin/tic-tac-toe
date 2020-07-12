@@ -1,9 +1,8 @@
 import React from 'react';
-import { GameBoard } from './Components/GameBoard';
+import { GameBoard } from './components/GameBoard';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import './Styles/GameBoard.css';
-import './Styles/Square.css'
+import './styles/_main.scss';
 
 function App() {
   return (

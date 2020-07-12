@@ -1,0 +1,62 @@
+// Structure based off Hugo Giraudel's Sass Boilerplate
+// https://github.com/HugoGiraudel/sass-boilerplate/tree/master/stylesheets
+
+/*
+* === Abstracts ===
+* Gathers all SCSS tools and helpers used across the project.
+* Every global variable, function, mixin and placeholder should be put in here.
+*
+*/
+@import "abstracts/variables";
+@import "abstracts/functions";
+// @import "abstracts/mixins";
+
+
+/*
+* === Vendors ===
+* Contains all CSS files from external libraries and frameworks
+* Normalize, Bootstrap, jQueryUI, etc.
+*
+*/
+// @import "vendors/file_path_here";
+
+/*
+* === Base ===
+* Boilerplate code for the project.
+* Defines some standard styles for commonly used HTML elements.
+*
+*/
+@import "base/reset";
+
+/*
+* === Layouts ===
+* Contains everything that takes part in laying out the site or application.
+* This folder could have stylesheets for the main parts of the site (header, footer, navigation, etc.)
+*
+*/
+@import "layouts/navigation";
+@import "layouts/grid";
+
+/*
+* === Components ===
+* Layouts is to macro (defining the global wireframe) as Components are to widgets (small UI elements).
+* The whole directory should be mostly composed of tiny modules.
+*
+*/
+@import "components/buttons";
+@import "components/square";
+/*
+* === Pages ===
+* For page-specific styles.
+* It’s not uncommon to have very specific styles for a certain page.
+*
+*/
+@import "pages/home";
+
+/*
+* === Themes ===
+* For themes.
+* Usually for enterprise applications.
+*
+*/
+@import "themes/theme";
