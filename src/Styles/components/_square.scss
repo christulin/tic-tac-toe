@@ -1,0 +1,9 @@
+.square {
+  height: ($base-spacing * 8);
+  width: ($base-spacing * 8);
+  border: 5px solid $black;
+}
+
+.active {
+  border: 5px solid red;
+}
