@@ -2,8 +2,7 @@ import React from 'react';
 import { GameBoard } from './Components/GameBoard';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import './Styles/GameBoard.css';
-import './Styles/Square.css'
+import './Styles/_main.scss';
 
 function App() {
   return (
