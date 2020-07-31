@@ -1,35 +1,35 @@
-import React from 'react';
-import Square from './Square';
-import * as utils from '../utils/functions';
+import React from 'react'
+import Square from './Square'
+import * as utils from '../utils/functions'
 
 export class GameBoard extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       squareArray: Array(9).fill(null),
       history: [],
       xIsNext: true,
-    };
+    }
   }
 
   handleSquareClick(num) {
-    const squares = this.state.squareArray.slice();
+    const squares = this.state.squareArray.slice()
 
     if (squares[num]) {
-      console.log('this has already been clicked');
-      return;
+      console.log('this has already been clicked')
+      return
     }
 
-    squares[num] = this.state.xIsNext ? 'x' : 'o';
+    squares[num] = this.state.xIsNext ? 'x' : 'o'
 
     this.setState({
       squareArray: squares,
       xIsNext: !this.state.xIsNext,
-    });
+    })
 
     if (utils.checkForWinner(squares)) {
-      return;
+      return
     }
   }
 
@@ -57,6 +57,6 @@ export class GameBoard extends React.Component {
           </div>
         </div>
       </div>
-    );
+    )
   }
 }

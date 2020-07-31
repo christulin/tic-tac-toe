@@ -1,15 +1,15 @@
-import React from 'react';
-import { GameBoard } from './components/GameBoard';
-import { BrowserRouter, Route } from 'react-router-dom';
+import React from 'react'
+import {GameBoard} from './components/GameBoard'
+import {BrowserRouter, Route} from 'react-router-dom'
 
-import './styles/_main.scss';
+import './styles/_main.scss'
 
 function App() {
   return (
     <div className="App">
-      <GameBoard/>
+      <GameBoard />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -13,6 +13,8 @@
     "react-scripts": "3.4.1"
   },
   "scripts": {
+    "format": "prettier --write \"**/*.{js,jsx}\"",
+    "lint": "eslint --ignore-path .gitignore . --ext js --ext jsx",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -33,5 +35,12 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "eslint": "^7.5.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.3",
+    "prettier": "^2.0.5"
+  }
 }
