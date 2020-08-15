@@ -1,27 +1,33 @@
 const express = require('express');
+const app = express();
 const bodyParser = require('body-parser');
-let AWS = require('aws-sdk');
+const AWS = require('aws-sdk');
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 
-let awsConfig = {
+// Include secrets
+require('dotenv').config({ path: __dirname + '/../.env.private' });
+
+const awsConfig = {
   region: 'us-west-2',
   endpoint: 'http://dynamodb.us-west-2.amazonaws.com',
-  accessKeyId: 'NOPE',
-  secretAccessKey: 'NOPE',
+  accessKeyId: process.env.DDB_ACCESS,
+  secretAccessKey: process.env.DDB_SECRET,
 };
 
-let tttConfig = {
+const tttConfig = {
   TableName: 'tic-tac-toe',
 };
 
 AWS.config.update(awsConfig);
-let ddb = new AWS.DynamoDB.DocumentClient();
-let app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+const ddb = new AWS.DynamoDB.DocumentClient();
+const urlParser = bodyParser.urlencoded({ extended: false });
+const jsonParser = bodyParser.json();
 
-app.get('/get-game', async (req, res) => {
+// API
+app.get('/get-game', urlParser, jsonParser, async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
-  let game_id = req.query.game_id || -1;
+  const game_id = req.query.game_id || -1;
   ddb.get(
     {
       ...tttConfig,
@@ -39,9 +45,9 @@ app.get('/get-game', async (req, res) => {
   );
 });
 
-app.post('/create-game', async (req, res) => {
+app.post('/create-game', urlParser, jsonParser, async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
-  let game_id = req.query.game_id || -1;
+  const game_id = req.query.game_id || -1;
   ddb.put(
     {
       ...tttConfig,
@@ -61,7 +67,7 @@ app.post('/create-game', async (req, res) => {
   );
 });
 
-app.get('/get-all-games', async (req, res) => {
+app.get('/get-all-games', urlParser, jsonParser, async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   ddb.scan(
     {
@@ -77,6 +83,15 @@ app.get('/get-all-games', async (req, res) => {
   );
 });
 
-let server = app.listen(8000, function () {
+app.listen(8000, function () {
   console.log('Server is listening on port 8000');
 });
+
+// WebSocket
+io.on('connection', socket => {
+  socket.on('new state', update => {
+    socket.broadcast.emit('update squares', update);
+  });
+});
+
+server.listen(3030)

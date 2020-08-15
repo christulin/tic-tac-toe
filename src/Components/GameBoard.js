@@ -1,35 +1,65 @@
-import React from 'react'
-import Square from './Square'
-import * as utils from '../utils/functions'
+import React from 'react';
+import Square from './Square';
+import * as utils from '../utils/functions';
+import io from 'socket.io-client';
+
+const socket = io('localhost:3030');
 
 export class GameBoard extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       squareArray: Array(9).fill(null),
       history: [],
       xIsNext: true,
-    }
+      isConnected: socket.connected,
+      lastMessage: null,
+    };
+  }
+
+  componentDidMount() {
+    socket.on('connect', () => {
+      this.setState({ isConnected: true });
+    });
+
+    socket.on('disconnect', () => {
+      this.setState({ isConnected: false });
+    });
+
+    socket.on('update squares', update => {
+      this.setState({
+        squareArray: update,
+        xIsNext: !this.state.xIsNext,
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    socket.off('connect');
+    socket.off('disconnect');
+    socket.off('message');
   }
 
   handleSquareClick(num) {
-    const squares = this.state.squareArray.slice()
+    const squares = this.state.squareArray.slice();
 
     if (squares[num]) {
-      console.log('this has already been clicked')
-      return
+      console.log('this has already been clicked');
+      return;
     }
 
-    squares[num] = this.state.xIsNext ? 'x' : 'o'
+    squares[num] = this.state.xIsNext ? 'x' : 'o';
 
     this.setState({
       squareArray: squares,
       xIsNext: !this.state.xIsNext,
-    })
+    });
+
+    socket.emit('new state', squares);
 
     if (utils.checkForWinner(squares)) {
-      return
+      return;
     }
   }
 
