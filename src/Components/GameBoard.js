@@ -14,7 +14,6 @@ export class GameBoard extends React.Component {
       history: [],
       xIsNext: true,
       isConnected: socket.connected,
-      lastMessage: null,
     };
   }
 
