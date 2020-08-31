@@ -3,16 +3,24 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "node-sass": "^4.14.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1"
+    "@testing-library/jest-dom": "4.2.4",
+    "@testing-library/react": "9.3.2",
+    "@testing-library/user-event": "7.1.2",
+    "aws-sdk": "2.728.0",
+    "express": "^4.17.1",
+    "node-sass": "4.14.1",
+    "querystring": "^0.2.0",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-router-dom": "5.2.0",
+    "react-scripts": "^3.4.3",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0",
+    "url": "^0.11.0"
   },
   "scripts": {
+    "format": "prettier --write \"**/*.{js,jsx}\"",
+    "lint": "eslint --ignore-path .gitignore . --ext js --ext jsx",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -33,5 +41,12 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "eslint": "7.5.0",
+    "eslint-config-prettier": "6.11.0",
+    "eslint-loader": "4.0.2",
+    "eslint-plugin-prettier": "3.1.4",
+    "eslint-plugin-react": "7.20.3",
+    "prettier": "2.0.5"
+  }
 }

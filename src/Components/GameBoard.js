@@ -1,6 +1,9 @@
 import React from 'react';
 import Square from './Square';
 import * as utils from '../utils/functions';
+import io from 'socket.io-client';
+
+const socket = io('localhost:3030');
 
 export class GameBoard extends React.Component {
   constructor(props) {
@@ -10,6 +13,8 @@ export class GameBoard extends React.Component {
       squareArray: Array(9).fill(null),
       history: [],
       xIsNext: true,
+      isConnected: socket.connected,
+
       squareActive: ['square active', 'square', 'square', 'square', 'square', 'square', 'square', 'square', 'square'],
       cursor: [0]
     };
@@ -44,8 +49,31 @@ export class GameBoard extends React.Component {
      
   }
 
-  handleSquareClick(num) { 
-    
+  componentDidMount() {
+    socket.on('connect', () => {
+      this.setState({ isConnected: true });
+    });
+
+    socket.on('disconnect', () => {
+      this.setState({ isConnected: false });
+    });
+
+    socket.on('update squares', update => {
+      this.setState({
+        squareArray: update,
+        xIsNext: !this.state.xIsNext,
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    socket.off('connect');
+    socket.off('disconnect');
+    socket.off('message');
+  }
+
+  handleSquareClick(num) {
+
     const squares = this.state.squareArray.slice();
 
     if (squares[num]) {
@@ -59,6 +87,8 @@ export class GameBoard extends React.Component {
       squareArray: squares,
       xIsNext: !this.state.xIsNext,
     });
+
+    socket.emit('new state', squares);
 
     if (utils.checkForWinner(squares)) {
       return;
@@ -93,6 +123,6 @@ export class GameBoard extends React.Component {
           {divs}
         </div>
       </div>
-    );
+    )
   }
 }
