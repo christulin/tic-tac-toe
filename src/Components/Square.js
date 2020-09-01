@@ -1,11 +1,12 @@
 import React from 'react'
 
 const Square = (props) => {
-  return (
-    <button className="square" onClick={props.onClick}>
-      {props.value}
-    </button>
-  )
+
+
+    return (
+    <button type="button" autoFocus={props.addFocus} className={props.class} onClick={props.onClick} onKeyDown={props.onKeyDown}>{props.value}</button>
+    )
+  
 }
 
 export default Square
