@@ -1,7 +1,27 @@
+button {
+  background-color: #FFF;
+}
+
 .square {
   height: ($base-spacing * 8);
   width: ($base-spacing * 8);
   border: 5px solid $black;
+}
+
+._0, ._1, ._2 {
+  border-top: none;
+}
+
+._2, ._5, ._8 {
+  border-right: none;
+}
+
+._0, ._3, ._6 {
+  border-left: none;
+}
+
+._6, ._7, ._8 {
+  border-bottom: none;
 }
 
 .active {

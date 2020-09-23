@@ -15,39 +15,39 @@ export class GameBoard extends React.Component {
       xIsNext: true,
       isConnected: socket.connected,
 
-      squareActive: ['square active', 'square', 'square', 'square', 'square', 'square', 'square', 'square', 'square'],
+      squareActive: ['square active _0', 'square _1', 'square _2', 'square _3', 'square _4', 'square _5', 'square _6', 'square _7', 'square _8'],
       cursor: [0]
     };
   }
 
   handleKeyDown(num, e) {
-     
-      var buttons = document.getElementsByTagName('button');
-      const toggleActive = this.state.squareActive.slice();
-      var newNum;
 
-      if (e.keyCode === 37 && num > 0) {
-        newNum = num - 1;
-       
-      } else if (e.keyCode === 39 && num < 8) {
-        newNum = num + 1;
-      
-      } else if (e.keyCode === 38 && num > 2) {
-        newNum = num - 3;
+    var buttons = document.getElementsByTagName('button');
+    const toggleActive = this.state.squareActive.slice();
+    var newNum;
 
-      } else if (e.keyCode === 40 && num < 6) {
-        newNum = num + 3;
-      }
-      if (newNum || newNum === 0) {
-        buttons[newNum].focus();
-        toggleActive[num] = 'square';
-        toggleActive[newNum] = 'square active';
-        this.setState({
-          squareActive: toggleActive
-        })
-      }
-     
-  }
+    if (e.keyCode === 37 && num > 0) {
+      newNum = num - 1;
+
+    } else if (e.keyCode === 39 && num < 8) {
+      newNum = num + 1;
+
+    } else if (e.keyCode === 38 && num > 2) {
+      newNum = num - 3;
+
+    } else if (e.keyCode === 40 && num < 6) {
+      newNum = num + 3;
+    }
+    if (newNum || newNum === 0) {
+      buttons[newNum].focus();
+      toggleActive[num] = 'square' + ' _' + num.toString();
+      toggleActive[newNum] = 'square active' + ' _' + newNum.toString();
+      this.setState({
+        squareActive: toggleActive
+      })
+    }
+
+}
 
   componentDidMount() {
     socket.on('connect', () => {
@@ -100,21 +100,21 @@ export class GameBoard extends React.Component {
     var divs = [];
     this.state.squareArray.forEach((square, i) => {
 
-        arrays.push(<Square
-          {...(i === 0 ? {addFocus: 'autofocus'} : {})}
-          value={this.state.squareArray[i]}
-          class={this.state.squareActive[i]}
-          onKeyDown={(e) => this.handleKeyDown(i, e)}
-          onClick={() => this.handleSquareClick(i)}
-        />)
-        if ((i + 1) % 3 === 0) {
-          divs.push(<div class="board-row" children={arrays.slice()}/>)
-          arrays = []
-        } 
-      })
+      arrays.push(<Square
+        {...(i === 0 ? {addFocus: 'autofocus'} : {})}
+        value={this.state.squareArray[i]}
+        class={this.state.squareActive[i]}
+        onKeyDown={(e) => this.handleKeyDown(i, e)}
+        onClick={() => this.handleSquareClick(i)}
+      />)
+      if ((i + 1) % 3 === 0) {
+        divs.push(<div class="board-row" children={arrays.slice()}/>)
+        arrays = []
+      }
+    })
 
     return (
-      
+
       <div className="board-wrapper">
         <div className="hud">
           <h3 className="turn-indicator">Current Player: {this.state.xIsNext ? 'X' : 'O'}</h3>
