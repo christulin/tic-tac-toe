@@ -1,7 +1,7 @@
 import React from 'react';
 import { GameBoard } from './Components/GameBoard';
 
-import './styles/_main.scss';
+import './Styles/_main.scss';
 
 function App() {
   return (
