@@ -8,17 +8,13 @@ export function checkForWinner(submission) {
     [2, 5, 8],
     [0, 4, 8],
     [2, 4, 6],
-  ]
+  ];
 
   for (let i = 0; i < 8; i++) {
-    const [one, two, three] = winners[i]
+    const [one, two, three] = winners[i];
 
-    if (
-      submission[one] &&
-      submission[one] === submission[two] &&
-      submission[one] === submission[three]
-    ) {
-      console.log(`winner is ${submission[one]}`)
+    if (submission[one] && submission[one] === submission[two] && submission[one] === submission[three]) {
+      console.log(`winner is ${submission[one]}`);
     }
   }
 }
