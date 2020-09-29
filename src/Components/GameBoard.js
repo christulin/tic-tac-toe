@@ -120,7 +120,9 @@ export class GameBoard extends React.Component {
           <h3 className="turn-indicator">Current Player: {this.state.xIsNext ? 'X' : 'O'}</h3>
         </div>
         <div className="board">
-          {divs}
+          <div className="inner-board-wrapper">
+            {divs}
+          </div>
         </div>
       </div>
     )

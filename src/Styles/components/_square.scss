@@ -1,23 +1,12 @@
-button {
-  background-color: #FFF;
-}
-
 .square {
   height: ($base-spacing * 8);
   width: ($base-spacing * 8);
   border: 5px solid $black;
+  background-color: #FFF;
 }
 
-._0, ._1, ._2 {
-  border-top: none;
-}
-
-._2, ._5, ._8 {
-  border-right: none;
-}
-
-._0, ._3, ._6 {
-  border-left: none;
+.square:focus {
+  outline: 0;
 }
 
 ._6, ._7, ._8 {
@@ -25,5 +14,14 @@ button {
 }
 
 .active {
-  border: 5px solid red;
+  box-shadow: inset 0 0 10px;
+}
+
+.board {
+  border: 5px solid #FFF;
+  overflow: hidden;
+}
+
+.inner-board-wrapper {
+  margin: -5px;
 }
