@@ -22,9 +22,9 @@ export class GameBoard extends React.Component {
 
   handleKeyDown(num, e) {
 
-    var buttons = document.getElementsByTagName('button');
+    let buttons = document.getElementsByClassName('square');
     const toggleActive = this.state.squareActive.slice();
-    var newNum;
+    let newNum;
 
     if (e.keyCode === 37 && num > 0) {
       newNum = num - 1;
