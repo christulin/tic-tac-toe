@@ -15,15 +15,25 @@ export class TiCTacToe extends React.Component {
       xIsNext: true,
       isConnected: socket.connected,
 
-      squareActive: ['square active', 'square', 'square', 'square', 'square', 'square', 'square', 'square', 'square'],
+      squareActive: [
+        'square active _0',
+        'square _1',
+        'square _2',
+        'square _3',
+        'square _4',
+        'square _5',
+        'square _6',
+        'square _7',
+        'square _8',
+      ],
       cursor: [0],
     };
   }
 
   handleKeyDown(num, e) {
-    var buttons = document.getElementsByTagName('button');
+    let buttons = document.getElementsByClassName('square');
     const toggleActive = this.state.squareActive.slice();
-    var newNum;
+    let newNum;
 
     if (e.keyCode === 37 && num > 0) {
       newNum = num - 1;
@@ -36,8 +46,8 @@ export class TiCTacToe extends React.Component {
     }
     if (newNum || newNum === 0) {
       buttons[newNum].focus();
-      toggleActive[num] = 'square';
-      toggleActive[newNum] = 'square active';
+      toggleActive[num] = 'square' + ' _' + num.toString();
+      toggleActive[newNum] = 'square active' + ' _' + newNum.toString();
       this.setState({
         squareActive: toggleActive,
       });
@@ -113,7 +123,9 @@ export class TiCTacToe extends React.Component {
         <div className="hud">
           <h3 className="turn-indicator">Current Player: {this.state.xIsNext ? 'X' : 'O'}</h3>
         </div>
-        <div className="board">{divs}</div>
+        <div className="board">
+          <div className="inner-board-wrapper">{divs}</div>
+        </div>
       </div>
     );
   }
