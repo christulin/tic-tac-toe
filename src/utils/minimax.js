@@ -18,7 +18,7 @@ const hasMovesLeftMatrix = board => board.flat().reduce((acc, val) => val === ''
 
 const evaluate = (board, player, opponent) => {
   const n = Math.ceil(Math.sqrt(board.length));
-  for (let i = 0, j = 0; i < board.length; i++) {
+  for (let i = 0, j = -1; i < board.length; i++) {
     if (i % n === 0) j++;
   }
 };
