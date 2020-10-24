@@ -100,7 +100,6 @@ export class GameBoard extends React.Component {
     var divs = [];
     this.state.squareArray.forEach((square, i) => {
 
-<<<<<<< HEAD
       arrays.push(<Square
         {...(i === 0 ? {addFocus: 'autofocus'} : {})}
         value={this.state.squareArray[i]}
@@ -113,23 +112,8 @@ export class GameBoard extends React.Component {
         arrays = []
       }
     })
-=======
-        arrays.push(<Square
-          {...(i === 0 ? {addFocus: 'autofocus'} : {})}
-          value={this.state.squareArray[i]}
-          class={this.state.squareActive[i]}
-          onKeyDown={(e) => this.handleKeyDown(i, e)}
-          onClick={() => this.handleSquareClick(i)}
-        />)
-        if ((i + 1) % 3 === 0) {
-          divs.push(<div class="board-row" children={arrays.slice()}/>)
-          arrays = []
-        }
-      })
->>>>>>> Started
 
     return (
-
       <div className="board-wrapper">
         <div className="hud">
           <h3 className="turn-indicator">Current Player: {this.state.xIsNext ? 'X' : 'O'}</h3>
