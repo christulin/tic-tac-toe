@@ -95,8 +95,9 @@ const minimax = (board, depth, isMax, player = 'x', opponent = 'o', alpha = Numb
         if (beta <= alpha) break;
       }
     }
+    
     return best;
-
+    
   // Get the best score for the minimizer
   } else {
     const best = Number.POSITIVE_INFINITY;
@@ -111,8 +112,8 @@ const minimax = (board, depth, isMax, player = 'x', opponent = 'o', alpha = Numb
         if (beta <= alpha) break;
       }
     }
+    
     return best;
-
   }
 };
 
