@@ -1,5 +1,3 @@
-const board = ['', '', '', '', '', '', '', '', ''];
-
 const anyElementsEqual = (array, val) => array.some(element => element === val);
 const allElementsEqual = (array, val) => array.every(element => element === val);
 
@@ -79,11 +77,11 @@ const minimax = (board, depth, isMax, player = 'x', opponent = 'o', alpha = Numb
   }
 
   // If the game is a draw, return a neutral score
-  if (hasMovesLeft(board)) return 0;
+  if (!hasMovesLeft(board)) return 0;
 
   // Get best score for the maximizer
   if (isMax) {
-    const best = Number.NEGATIVE_INFINITY;
+    let best = Number.NEGATIVE_INFINITY;
 
     for (let i = 0; i < board.length; i++) {
       if (board[i] === '') {
@@ -95,12 +93,12 @@ const minimax = (board, depth, isMax, player = 'x', opponent = 'o', alpha = Numb
         if (beta <= alpha) break;
       }
     }
-    
+
     return best;
-    
+
   // Get the best score for the minimizer
   } else {
-    const best = Number.POSITIVE_INFINITY;
+    let best = Number.POSITIVE_INFINITY;
 
     for (let i = 0; i < board.length; i++) {
       if (board[i] === '') {
@@ -112,7 +110,7 @@ const minimax = (board, depth, isMax, player = 'x', opponent = 'o', alpha = Numb
         if (beta <= alpha) break;
       }
     }
-    
+
     return best;
   }
 };

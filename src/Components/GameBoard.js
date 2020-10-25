@@ -1,53 +1,120 @@
 import React from 'react';
 import Square from './Square';
 import * as utils from '../utils/functions';
+import findBestMove from '../utils/minimax';
 import io from 'socket.io-client';
 
 const socket = io('localhost:3030');
 
+/*
+ * 1. Toggle AI vs player
+ *   a. Reset board when switching between the two
+ * 2. Don't allow player to move when it is AI's turn
+ */
+
 export class GameBoard extends React.Component {
   constructor(props) {
     super(props);
-    this.handleKeyDown = this.handleKeyDown.bind(this)
     this.state = {
-      squareArray: Array(9).fill(null),
+      boardState: Array(9).fill(''),
       history: [],
       xIsNext: true,
       isConnected: socket.connected,
+      playAgainstComputer: false,
 
       squareActive: ['square active _0', 'square _1', 'square _2', 'square _3', 'square _4', 'square _5', 'square _6', 'square _7', 'square _8'],
       cursor: [0]
     };
+
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.toggleComputer = this.toggleComputer.bind(this);
   }
 
-  handleKeyDown(num, e) {
-
+  handleKeyDown(idx, e) {
     let buttons = document.getElementsByClassName('square');
     const toggleActive = this.state.squareActive.slice();
-    let newNum;
+    let newIdx;
 
-    if (e.keyCode === 37 && num > 0) {
-      newNum = num - 1;
+    if (e.keyCode === 37 && idx > 0) {
+      newIdx = idx - 1;
 
-    } else if (e.keyCode === 39 && num < 8) {
-      newNum = num + 1;
+    } else if (e.keyCode === 39 && idx < 8) {
+      newIdx = idx + 1;
 
-    } else if (e.keyCode === 38 && num > 2) {
-      newNum = num - 3;
+    } else if (e.keyCode === 38 && idx > 2) {
+      newIdx = idx - 3;
 
-    } else if (e.keyCode === 40 && num < 6) {
-      newNum = num + 3;
+    } else if (e.keyCode === 40 && idx < 6) {
+      newIdx = idx + 3;
     }
-    if (newNum || newNum === 0) {
-      buttons[newNum].focus();
-      toggleActive[num] = 'square' + ' _' + num.toString();
-      toggleActive[newNum] = 'square active' + ' _' + newNum.toString();
+    if (newIdx || newIdx === 0) {
+      buttons[newIdx].focus();
+      toggleActive[idx] = 'square' + ' _' + idx.toString();
+      toggleActive[newIdx] = 'square active' + ' _' + newIdx.toString();
       this.setState({
         squareActive: toggleActive
       })
     }
+  }
 
-}
+  toggleComputer(state) {
+    if (typeof state === 'undefined') {
+      this.setState({
+        playAgainstComputer: !this.playAgainstComputer,
+      });
+    } else {
+      this.setState({
+        playAgainstComputer: state,
+      });
+    }
+  }
+
+  handleSquareClick(idx) {
+    const board = this.state.boardState.slice();
+
+    if (this.state.playAgainstComputer) {
+      if (this.state.xIsNext) {
+        if (board[idx]) {
+          console.log('this has already been clicked');
+          return;
+        }
+        board[idx] = 'x';
+
+        this.setState({
+          xIsNext: !this.state.xIsNext,
+          boardState: board,
+        }, () => {
+          setTimeout(() => {
+            const computersMove = findBestMove(board, 'o', 'x');
+            board[computersMove] = 'o';
+
+            this.setState({
+              xIsNext: !this.state.xIsNext,
+              boardState: board,
+            });
+          }, 500);
+        });
+
+      }
+    } else {
+      if (board[idx]) {
+        console.log('this has already been clicked');
+        return;
+      }
+      board[idx] = this.state.xIsNext ? 'x' : 'o';
+
+      this.setState({
+        xIsNext: !this.state.xIsNext,
+        boardState: board,
+      });
+    }
+
+    socket.emit('new state', board);
+
+    if (utils.checkForWinner(board)) {
+      return;
+    }
+  }
 
   componentDidMount() {
     socket.on('connect', () => {
@@ -60,7 +127,7 @@ export class GameBoard extends React.Component {
 
     socket.on('update squares', update => {
       this.setState({
-        squareArray: update,
+        boardState: update,
         xIsNext: !this.state.xIsNext,
       });
     });
@@ -72,43 +139,21 @@ export class GameBoard extends React.Component {
     socket.off('message');
   }
 
-  handleSquareClick(num) {
-
-    const squares = this.state.squareArray.slice();
-
-    if (squares[num]) {
-      console.log('this has already been clicked');
-      return;
-    }
-
-    squares[num] = this.state.xIsNext ? 'x' : 'o';
-
-    this.setState({
-      squareArray: squares,
-      xIsNext: !this.state.xIsNext,
-    });
-
-    socket.emit('new state', squares);
-
-    if (utils.checkForWinner(squares)) {
-      return;
-    }
-  }
-
   render() {
     var arrays = [];
     var divs = [];
-    this.state.squareArray.forEach((square, i) => {
+    this.state.boardState.forEach((square, i) => {
 
       arrays.push(<Square
         {...(i === 0 ? {addFocus: 'autofocus'} : {})}
-        value={this.state.squareArray[i]}
-        class={this.state.squareActive[i]}
+        key={i}
+        value={this.state.boardState[i]}
+        className={this.state.squareActive[i]}
         onKeyDown={(e) => this.handleKeyDown(i, e)}
         onClick={() => this.handleSquareClick(i)}
       />)
       if ((i + 1) % 3 === 0) {
-        divs.push(<div class="board-row" children={arrays.slice()}/>)
+        divs.push(<div key={i} className="board-row" children={arrays.slice()}/>)
         arrays = []
       }
     })
@@ -117,6 +162,11 @@ export class GameBoard extends React.Component {
       <div className="board-wrapper">
         <div className="hud">
           <h3 className="turn-indicator">Current Player: {this.state.xIsNext ? 'X' : 'O'}</h3>
+          <div className="opponent-selector">
+            <h4 className="heading">Play against computer</h4>
+            <button onClick={() => this.toggleComputer(true)} className={`btn ${this.state.playAgainstComputer ? 'active' : ''}`}>On</button>
+            <button onClick={() => this.toggleComputer(false)} className={`btn ${this.state.playAgainstComputer ? '' : 'active'}`}>Off</button>
+          </div>
         </div>
         <div className="board">
           <div className="inner-board-wrapper">
