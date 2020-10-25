@@ -6,12 +6,6 @@ import io from 'socket.io-client';
 
 const socket = io('localhost:3030');
 
-/*
- * 1. Toggle AI vs player
- *   a. Reset board when switching between the two
- * 2. Don't allow player to move when it is AI's turn
- */
-
 export class GameBoard extends React.Component {
   constructor(props) {
     super(props);
