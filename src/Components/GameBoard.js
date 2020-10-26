@@ -54,10 +54,12 @@ export class GameBoard extends React.Component {
   toggleComputer(state) {
     if (typeof state === 'undefined') {
       this.setState({
+        boardState: Array(9).fill(''),
         playAgainstComputer: !this.playAgainstComputer,
       });
     } else {
       this.setState({
+        boardState: Array(9).fill(''),
         playAgainstComputer: state,
       });
     }
