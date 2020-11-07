@@ -21,7 +21,7 @@ export class GameBoard extends React.Component {
     };
 
     this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.toggleComputer = this.toggleComputer.bind(this);
+    this.setComputer = this.setComputer.bind(this);
   }
 
   handleKeyDown(idx, e) {
@@ -41,6 +41,7 @@ export class GameBoard extends React.Component {
     } else if (e.keyCode === 40 && idx < 6) {
       newIdx = idx + 3;
     }
+
     if (newIdx || newIdx === 0) {
       buttons[newIdx].focus();
       toggleActive[idx] = 'square' + ' _' + idx.toString();
@@ -51,16 +52,18 @@ export class GameBoard extends React.Component {
     }
   }
 
-  toggleComputer(state) {
-    if (typeof state === 'undefined') {
+  setComputer(state = null) {
+    if (state === null) {
       this.setState({
         boardState: Array(9).fill(''),
         playAgainstComputer: !this.playAgainstComputer,
+        xIsNext: true,
       });
     } else {
       this.setState({
         boardState: Array(9).fill(''),
         playAgainstComputer: state,
+        xIsNext: true,
       });
     }
   }
@@ -160,8 +163,8 @@ export class GameBoard extends React.Component {
           <h3 className="turn-indicator">Current Player: {this.state.xIsNext ? 'X' : 'O'}</h3>
           <div className="opponent-selector">
             <h4 className="heading">Play against computer</h4>
-            <button onClick={() => this.toggleComputer(true)} className={`btn ${this.state.playAgainstComputer ? 'active' : ''}`}>On</button>
-            <button onClick={() => this.toggleComputer(false)} className={`btn ${this.state.playAgainstComputer ? '' : 'active'}`}>Off</button>
+            <button onClick={() => this.setComputer(true)} className={`btn ${this.state.playAgainstComputer && 'active'}`}>On</button>
+            <button onClick={() => this.setComputer(false)} className={`btn ${!this.state.playAgainstComputer && 'active'}`}>Off</button>
           </div>
         </div>
         <div className="board">
