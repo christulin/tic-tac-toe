@@ -1,15 +1,15 @@
 import React from 'react';
 
-const Square = props => {
+const Square = ({ addFocus, classname, onClick, onKeyDown, value }) => {
   return (
     <button
       type="button"
-      autoFocus={props.addFocus}
-      className={props.class}
-      onClick={props.onClick}
-      onKeyDown={props.onKeyDown}
+      autoFocus={addFocus}
+      className={classname}
+      onClick={onClick}
+      onKeyDown={onKeyDown}
     >
-      {props.value}
+      {value}
     </button>
   );
 };

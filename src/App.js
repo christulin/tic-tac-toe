@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './Styles/_main.scss';
 
-import { TiCTacToe } from './Routes/TicTacToe';
+import { TicTacToe } from './Routes/TicTacToe';
 import { Login } from './Routes/Login';
 
 export default function App() {
@@ -14,7 +14,7 @@ export default function App() {
             <Login />
           </Route>
           <Route path="/">
-            <TiCTacToe />
+            <TicTacToe />
           </Route>
         </Switch>
       </div>
