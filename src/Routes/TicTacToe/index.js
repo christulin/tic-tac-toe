@@ -1,5 +1,6 @@
 import React from 'react';
 import Square from './Square';
+import findBestMove from '../../utils/minimax';
 import NavBar from './NavBar';
 import * as utils from './functions';
 import io from 'socket.io-client';
@@ -11,10 +12,11 @@ export class TicTacToe extends React.Component {
     super(props);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.state = {
-      squareArray: Array(9).fill(null),
+      boardState: Array(9).fill(''),
       history: [],
       xIsNext: true,
       isConnected: socket.connected,
+      playAgainstComputer: false,
 
       squareActive: [
         'square active _0',
@@ -29,29 +31,99 @@ export class TicTacToe extends React.Component {
       ],
       cursor: [0],
     };
+
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.setComputer = this.setComputer.bind(this);
   }
 
-  handleKeyDown(num, e) {
+  handleKeyDown(idx, e) {
     let buttons = document.getElementsByClassName('square');
     const toggleActive = this.state.squareActive.slice();
-    let newNum;
+    let newIdx;
 
-    if (e.keyCode === 37 && num > 0) {
-      newNum = num - 1;
-    } else if (e.keyCode === 39 && num < 8) {
-      newNum = num + 1;
-    } else if (e.keyCode === 38 && num > 2) {
-      newNum = num - 3;
-    } else if (e.keyCode === 40 && num < 6) {
-      newNum = num + 3;
+    if (e.keyCode === 37 && idx > 0) {
+      newIdx = idx - 1;
+
+    } else if (e.keyCode === 39 && idx < 8) {
+      newIdx = idx + 1;
+
+    } else if (e.keyCode === 38 && idx > 2) {
+      newIdx = idx - 3;
+
+    } else if (e.keyCode === 40 && idx < 6) {
+      newIdx = idx + 3;
     }
-    if (newNum || newNum === 0) {
-      buttons[newNum].focus();
-      toggleActive[num] = 'square' + ' _' + num.toString();
-      toggleActive[newNum] = 'square active' + ' _' + newNum.toString();
+
+    if (newIdx || newIdx === 0) {
+      buttons[newIdx].focus();
+      toggleActive[idx] = 'square' + ' _' + idx.toString();
+      toggleActive[newIdx] = 'square active' + ' _' + newIdx.toString();
       this.setState({
         squareActive: toggleActive,
       });
+    }
+  }
+
+  setComputer(state = null) {
+    if (state === null) {
+      this.setState({
+        boardState: Array(9).fill(''),
+        playAgainstComputer: !this.playAgainstComputer,
+        xIsNext: true,
+      });
+    } else {
+      this.setState({
+        boardState: Array(9).fill(''),
+        playAgainstComputer: state,
+        xIsNext: true,
+      });
+    }
+  }
+
+  handleSquareClick(idx) {
+    const board = this.state.boardState.slice();
+
+    if (this.state.playAgainstComputer) {
+      if (this.state.xIsNext) {
+        if (board[idx]) {
+          console.log('this has already been clicked');
+          return;
+        }
+        board[idx] = 'x';
+
+        this.setState({
+          xIsNext: !this.state.xIsNext,
+          boardState: board,
+        }, () => {
+          setTimeout(() => {
+            const computersMove = findBestMove(board, 'o', 'x');
+            board[computersMove] = 'o';
+
+            this.setState({
+              xIsNext: !this.state.xIsNext,
+              boardState: board,
+            });
+          }, 500);
+        });
+
+      }
+    } else {
+      if (board[idx]) {
+        console.log('this has already been clicked');
+        return;
+      }
+      board[idx] = this.state.xIsNext ? 'x' : 'o';
+
+      this.setState({
+        xIsNext: !this.state.xIsNext,
+        boardState: board,
+      });
+    }
+
+    socket.emit('new state', board);
+
+    if (utils.checkForWinner(board)) {
+      return;
     }
   }
 
@@ -66,7 +138,7 @@ export class TicTacToe extends React.Component {
 
     socket.on('update squares', update => {
       this.setState({
-        squareArray: update,
+        boardState: update,
         xIsNext: !this.state.xIsNext,
       });
     });
@@ -78,44 +150,22 @@ export class TicTacToe extends React.Component {
     socket.off('message');
   }
 
-  handleSquareClick(num) {
-    const squares = this.state.squareArray.slice();
-
-    if (squares[num]) {
-      console.log('this has already been clicked');
-      return;
-    }
-
-    squares[num] = this.state.xIsNext ? 'x' : 'o';
-
-    this.setState({
-      squareArray: squares,
-      xIsNext: !this.state.xIsNext,
-    });
-
-    socket.emit('new state', squares);
-
-    if (utils.checkForWinner(squares)) {
-      return;
-    }
-  }
-
   render() {
     var arrays = [];
     var divs = [];
-    this.state.squareArray.forEach((square, i) => {
-      arrays.push(
-        <Square
-          {...(i === 0 ? { addFocus: 'autofocus' } : {})}
-          value={this.state.squareArray[i]}
-          classname={this.state.squareActive[i]}
-          onKeyDown={e => this.handleKeyDown(i, e)}
-          onClick={() => this.handleSquareClick(i)}
-        />
-      );
+    this.state.boardState.forEach((square, i) => {
+
+      arrays.push(<Square
+        {...(i === 0 ? {addFocus: 'autofocus'} : {})}
+        key={i}
+        value={this.state.boardState[i]}
+        classname={this.state.squareActive[i]}
+        onKeyDown={(e) => this.handleKeyDown(i, e)}
+        onClick={() => this.handleSquareClick(i)}
+      />)
       if ((i + 1) % 3 === 0) {
-        divs.push(<div class="board-row" children={arrays.slice()} />);
-        arrays = [];
+        divs.push(<div key={i} className="board-row" children={arrays.slice()}/>)
+        arrays = []
       }
     });
 
@@ -126,6 +176,11 @@ export class TicTacToe extends React.Component {
         </div>
         <div className="hud">
           <h3 className="turn-indicator">Current Player: {this.state.xIsNext ? 'X' : 'O'}</h3>
+          <div className="opponent-selector">
+            <h4 className="heading">Play against computer</h4>
+            <button onClick={() => this.setComputer(true)} className={`btn ${this.state.playAgainstComputer && 'active'}`}>On</button>
+            <button onClick={() => this.setComputer(false)} className={`btn ${!this.state.playAgainstComputer && 'active'}`}>Off</button>
+          </div>
         </div>
         <div className="board">
           <div className="inner-board-wrapper">{divs}</div>
