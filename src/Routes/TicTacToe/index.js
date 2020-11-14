@@ -1,11 +1,12 @@
 import React from 'react';
 import Square from './Square';
+import NavBar from './NavBar';
 import * as utils from './functions';
 import io from 'socket.io-client';
 
 const socket = io('localhost:3030');
 
-export class TiCTacToe extends React.Component {
+export class TicTacToe extends React.Component {
   constructor(props) {
     super(props);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -107,7 +108,7 @@ export class TiCTacToe extends React.Component {
         <Square
           {...(i === 0 ? { addFocus: 'autofocus' } : {})}
           value={this.state.squareArray[i]}
-          class={this.state.squareActive[i]}
+          classname={this.state.squareActive[i]}
           onKeyDown={e => this.handleKeyDown(i, e)}
           onClick={() => this.handleSquareClick(i)}
         />
@@ -120,6 +121,9 @@ export class TiCTacToe extends React.Component {
 
     return (
       <div className="board-wrapper">
+        <div className="nav-wrapper">
+          <NavBar />
+        </div>
         <div className="hud">
           <h3 className="turn-indicator">Current Player: {this.state.xIsNext ? 'X' : 'O'}</h3>
         </div>
