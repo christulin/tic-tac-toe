@@ -6,6 +6,24 @@
   font-size: ($base-spacing * 4);
 }
 
+@media (min-width: 768px) {
+  .square {
+    height: ($base-spacing * 8);
+    width: ($base-spacing * 8);
+    border: 5px solid $black-2;
+    background-color: #FFF;
+  }
+}
+
+@media (max-width: 768px) {
+  .square {
+    height: ($base-spacing * 6);
+    width: ($base-spacing * 6);
+    border: 5px solid $black-2;
+    background-color: #FFF;
+  }
+}
+
 .square:focus {
   outline: 0;
 }
@@ -19,7 +37,7 @@
 }
 
 .board {
-  border: 5px solid #FFF;
+  border: 5px solid $white;
   overflow: hidden;
 }
 

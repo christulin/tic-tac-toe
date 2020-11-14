@@ -1,0 +1,19 @@
+.nav-wrapper ul {
+  padding: 10px
+}
+
+.nav-wrapper a {
+  text-decoration: none;
+  color: $white;
+}
+
+.nav-wrapper {
+  width: 100%;
+  background-color: $black-2;
+  color: $white;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+}

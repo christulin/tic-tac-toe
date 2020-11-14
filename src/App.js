@@ -1,14 +1,23 @@
 import React from 'react';
-import { GameBoard } from './Components/GameBoard';
-
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './Styles/_main.scss';
 
-function App() {
+import { TicTacToe } from './Routes/TicTacToe';
+import { Login } from './Routes/Login';
+
+export default function App() {
   return (
-    <div className="App">
-      <GameBoard />
-    </div>
+    <Router>
+      <div className="App">
+        <Switch>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/">
+            <TicTacToe />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
-
-export default App;

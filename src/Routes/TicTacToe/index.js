@@ -1,14 +1,16 @@
 import React from 'react';
 import Square from './Square';
-import * as utils from '../utils/functions';
-import findBestMove from '../utils/minimax';
+import findBestMove from '../../utils/minimax';
+import NavBar from './NavBar';
+import * as utils from './functions';
 import io from 'socket.io-client';
 
 const socket = io('localhost:3030');
 
-export class GameBoard extends React.Component {
+export class TicTacToe extends React.Component {
   constructor(props) {
     super(props);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
     this.state = {
       boardState: Array(9).fill(''),
       history: [],
@@ -16,8 +18,18 @@ export class GameBoard extends React.Component {
       isConnected: socket.connected,
       playAgainstComputer: false,
 
-      squareActive: ['square active _0', 'square _1', 'square _2', 'square _3', 'square _4', 'square _5', 'square _6', 'square _7', 'square _8'],
-      cursor: [0]
+      squareActive: [
+        'square active _0',
+        'square _1',
+        'square _2',
+        'square _3',
+        'square _4',
+        'square _5',
+        'square _6',
+        'square _7',
+        'square _8',
+      ],
+      cursor: [0],
     };
 
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -47,8 +59,8 @@ export class GameBoard extends React.Component {
       toggleActive[idx] = 'square' + ' _' + idx.toString();
       toggleActive[newIdx] = 'square active' + ' _' + newIdx.toString();
       this.setState({
-        squareActive: toggleActive
-      })
+        squareActive: toggleActive,
+      });
     }
   }
 
@@ -147,7 +159,7 @@ export class GameBoard extends React.Component {
         {...(i === 0 ? {addFocus: 'autofocus'} : {})}
         key={i}
         value={this.state.boardState[i]}
-        className={this.state.squareActive[i]}
+        classname={this.state.squareActive[i]}
         onKeyDown={(e) => this.handleKeyDown(i, e)}
         onClick={() => this.handleSquareClick(i)}
       />)
@@ -155,10 +167,13 @@ export class GameBoard extends React.Component {
         divs.push(<div key={i} className="board-row" children={arrays.slice()}/>)
         arrays = []
       }
-    })
+    });
 
     return (
       <div className="board-wrapper">
+        <div className="nav-wrapper">
+          <NavBar />
+        </div>
         <div className="hud">
           <h3 className="turn-indicator">Current Player: {this.state.xIsNext ? 'X' : 'O'}</h3>
           <div className="opponent-selector">
@@ -168,11 +183,9 @@ export class GameBoard extends React.Component {
           </div>
         </div>
         <div className="board">
-          <div className="inner-board-wrapper">
-            {divs}
-          </div>
+          <div className="inner-board-wrapper">{divs}</div>
         </div>
       </div>
-    )
+    );
   }
 }
