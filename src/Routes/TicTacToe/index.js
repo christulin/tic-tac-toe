@@ -13,6 +13,7 @@ export class TicTacToe extends React.Component {
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.state = {
       boardState: Array(9).fill(''),
+      isActiveGame: true,
       history: [],
       xIsNext: true,
       isConnected: socket.connected,
@@ -34,6 +35,7 @@ export class TicTacToe extends React.Component {
 
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.setComputer = this.setComputer.bind(this);
+    this.handleReset = this.handleReset.bind(this);
   }
 
   handleKeyDown(idx, e) {
@@ -80,7 +82,16 @@ export class TicTacToe extends React.Component {
     }
   }
 
+  handleReset() {
+    console.log('helloe')
+  }
+
   handleSquareClick(idx) {
+
+    if (!this.state.isActiveGame) {
+      return;
+    }
+
     const board = this.state.boardState.slice();
 
     if (this.state.playAgainstComputer) {
@@ -123,6 +134,9 @@ export class TicTacToe extends React.Component {
     socket.emit('new state', board);
 
     if (utils.checkForWinner(board)) {
+      this.setState({
+        isActiveGame: false
+      })
       return;
     }
   }
@@ -184,6 +198,9 @@ export class TicTacToe extends React.Component {
         </div>
         <div className="board">
           <div className="inner-board-wrapper">{divs}</div>
+        </div>
+        <div className={`controls ${this.state.isActiveGame}`}>
+          <button onClick={() => this.handleReset()}>Reset Game</button>
         </div>
       </div>
     );

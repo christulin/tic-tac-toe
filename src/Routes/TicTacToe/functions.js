@@ -15,6 +15,7 @@ export function checkForWinner(submission) {
 
     if (submission[one] && submission[one] === submission[two] && submission[one] === submission[three]) {
       console.log(`winner is ${submission[one]}`);
+      return true;
     }
   }
 }
