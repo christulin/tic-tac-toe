@@ -9,10 +9,6 @@
   display: flex;
 }
 
-button {
-  font-size: ($base-spacing * 4);
-}
-
 .hud {
-  margin-bottom: $base-spacing;
+  margin: $base-spacing 0;
 }
