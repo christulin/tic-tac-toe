@@ -25,6 +25,30 @@ const urlParser = bodyParser.urlencoded({ extended: false });
 const jsonParser = bodyParser.json();
 
 // API
+app.post('/login', urlParser, jsonParser, async (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+
+  const { username, password } = req.body;
+
+  ddb.get(
+    {
+      TableName: 'Users',
+      Key: {
+        username,
+      },
+    },
+    (err, data) => {
+      if (err) {
+        return res.send(err);
+      } else {
+        const isItem = 'Item' in data;
+        const response = isItem ? { ...data.Item, success: true } : { success: false };
+        return res.send(response);
+      }
+    }
+  );
+});
+
 app.get('/get-game', urlParser, jsonParser, async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   const game_id = req.query.game_id || -1;
@@ -94,4 +118,4 @@ io.on('connection', socket => {
   });
 });
 
-server.listen(3030)
+server.listen(3030);
