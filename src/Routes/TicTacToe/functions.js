@@ -1,4 +1,5 @@
 export function checkForWinner(submission) {
+
   const winners = [
     [0, 1, 2],
     [3, 4, 5],
@@ -14,8 +15,12 @@ export function checkForWinner(submission) {
     const [one, two, three] = winners[i];
 
     if (submission[one] && submission[one] === submission[two] && submission[one] === submission[three]) {
-      console.log(`winner is ${submission[one]}`);
+      console.log(`winner is ${submission[one]}!`);
       return true;
+    } else if (submission.includes('')) {
+      return;
+    } else {
+      return false;
     }
   }
 }

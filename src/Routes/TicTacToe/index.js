@@ -83,7 +83,10 @@ export class TicTacToe extends React.Component {
   }
 
   handleReset() {
-    console.log('helloe')
+    this.setState({
+      boardState: Array(9).fill(''),
+      isActiveGame: true,
+    })
   }
 
   handleSquareClick(idx) {
@@ -133,12 +136,14 @@ export class TicTacToe extends React.Component {
 
     socket.emit('new state', board);
 
-    if (utils.checkForWinner(board)) {
+    console.log(board)
+    if (utils.checkForWinner(board) || utils.checkForWinner(board) === false) {
       this.setState({
         isActiveGame: false
       })
       return;
     }
+
   }
 
   componentDidMount() {
@@ -200,7 +205,7 @@ export class TicTacToe extends React.Component {
           <div className="inner-board-wrapper">{divs}</div>
         </div>
         <div className={`controls ${this.state.isActiveGame}`}>
-          <button onClick={() => this.handleReset()}>Reset Game</button>
+          <button className="btn" onClick={() => this.handleReset()}>Reset Game</button>
         </div>
       </div>
     );
