@@ -12,3 +12,10 @@
 .hud {
   margin: $base-spacing 0;
 }
+
+.controls {
+  display: block;
+  &.true {
+    display: none;
+  }
+}
