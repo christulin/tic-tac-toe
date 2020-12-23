@@ -1,7 +1,6 @@
 import React from 'react';
 import Square from './Square';
 import findBestMove from '../../utils/minimax';
-import NavBar from './NavBar';
 import * as utils from './functions';
 import io from 'socket.io-client';
 
@@ -171,9 +170,6 @@ export class TicTacToe extends React.Component {
 
     return (
       <div className="board-wrapper">
-        <div className="nav-wrapper">
-          <NavBar />
-        </div>
         <div className="hud">
           <h3 className="turn-indicator">Current Player: {this.state.xIsNext ? 'X' : 'O'}</h3>
           <div className="opponent-selector">
