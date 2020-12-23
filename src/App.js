@@ -1,10 +1,10 @@
 import './Styles/_main.scss';
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { TicTacToe } from './Routes/TicTacToe';
 import { Login } from './Routes/Login';
 import { ConnectFour } from './Routes/ConnectFour';
-import Navbar from './Layout/NavBar';
+import Navbar from './Layouts/NavBar';
 
 export default function App() {
   return (
