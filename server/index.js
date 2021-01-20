@@ -94,4 +94,4 @@ io.on('connection', socket => {
   });
 });
 
-server.listen(3030)
+server.listen(3030);

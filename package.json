@@ -7,12 +7,14 @@
     "@testing-library/react": "9.3.2",
     "@testing-library/user-event": "7.1.2",
     "aws-sdk": "2.728.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "node-sass": "4.14.1",
     "querystring": "^0.2.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-scripts": "^3.4.3",
+    "s3-lambo": "^1.0.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
     "url": "^0.11.0"
@@ -23,6 +25,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "deploy": "node ./deploy-to-s3.js",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -41,6 +44,7 @@
     ]
   },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.3.0",
     "eslint": "7.5.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-loader": "4.0.2",
