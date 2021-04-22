@@ -1,3 +1,4 @@
+import faker from 'faker';
 import React from 'react';
 
 const Letters = [
@@ -56,7 +57,7 @@ export class Hangman extends React.Component {
     this.state = {
       guessedLetters: [],
       guessesLeft: 6,
-      word: 'Dog',
+      word: faker.animal.dog(),
       isWin: false,
     };
 
@@ -102,6 +103,7 @@ export class Hangman extends React.Component {
     } else {
       return (
         <div className="hangman">
+          <br />
           <h4>Guesses Left: {this.state.guessesLeft}</h4>
           <h5>
             Word:
