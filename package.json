@@ -7,18 +7,18 @@
     "@testing-library/react": "9.3.2",
     "@testing-library/user-event": "7.1.2",
     "aws-sdk": "2.728.0",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "faker": "^5.5.3",
+    "dotenv": "8.2.0",
+    "express": "4.17.1",
+    "faker": "5.5.3",
     "node-sass": "4.14.1",
-    "querystring": "^0.2.0",
+    "querystring": "0.2.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-scripts": "^3.4.3",
-    "s3-lambo": "^1.0.0",
-    "socket.io": "^2.3.0",
-    "socket.io-client": "^2.3.0",
-    "url": "^0.11.0"
+    "react-scripts": "3.4.3",
+    "s3-lambo": "1.0.0",
+    "socket.io": "2.3.0",
+    "socket.io-client": "2.3.0",
+    "url": "0.11.0"
   },
   "scripts": {
     "format": "prettier --write \"**/*.{js,jsx}\"",
@@ -45,7 +45,7 @@
     ]
   },
   "devDependencies": {
-    "@aws-sdk/client-s3": "^3.3.0",
+    "@aws-sdk/client-s3": "3.3.0",
     "eslint": "7.5.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-loader": "4.0.2",
