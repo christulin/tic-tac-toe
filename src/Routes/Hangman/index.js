@@ -1,36 +1,9 @@
 import faker from 'faker';
 import React from 'react';
 
-const Letters = [
-  'a',
-  'b',
-  'c',
-  'd',
-  'e',
-  'f',
-  'g',
-  'h',
-  'i',
-  'j',
-  'k',
-  'l',
-  'm',
-  'n',
-  'o',
-  'p',
-  'q',
-  'r',
-  's',
-  't',
-  'u',
-  'v',
-  'w',
-  'x',
-  'y',
-  'z',
-];
-
-const GameOver = <h1>Game Over :(</h1>;
+import Letters from './Letters';
+import GameWin from './GameWin';
+import GameOver from './GameOver';
 
 const isWinnerFunc = (word, guessedLetters) => {
   let isWinner = false;
@@ -94,35 +67,34 @@ export class Hangman extends React.Component {
 
   render() {
     let isGameOver = !this.state.guessesLeft;
-    let isWin = this.state.isWin;
+    let isGameWin = this.state.isWin;
 
-    if (isGameOver) {
-      return GameOver;
-    } else if (isWin) {
-      return <h1>YOU WON!</h1>;
-    } else {
-      return (
-        <div className="hangman">
-          <br />
-          <h4>Guesses Left: {this.state.guessesLeft}</h4>
-          <h5>
-            Word:
-            {this.state.word
-              .toLowerCase() // SOS
-              .split('')
-              .map(letter => {
-                let isCorrect = this.state.guessedLetters.includes(letter);
-                return isCorrect ? <span>{letter}</span> : <span>_</span>;
-              })}
-          </h5>
-          <hr />
-          {Letters.map(letter => (
-            <span onClick={() => this.guessLetter(letter)} style={{ marginRight: '5px' }}>
-              {letter}
-            </span>
-          ))}
-        </div>
-      );
+    if (isGameWin) {
+      return <GameWin message="You Won!"></GameWin>;
+    } else if (isGameOver) {
+      return <GameOver message="Game Over!"></GameOver>;
     }
+
+    return (
+      <div className="hangman">
+        <h4>Guesses Left: {this.state.guessesLeft}</h4>
+        <h5>
+          Word:
+          {this.state.word
+            .toLowerCase() // SOS
+            .split('')
+            .map(letter => {
+              let isCorrect = this.state.guessedLetters.includes(letter);
+              return isCorrect ? <span>{letter}</span> : <span>_</span>;
+            })}
+        </h5>
+        <hr />
+        {Letters.map(letter => (
+          <span onClick={() => this.guessLetter(letter)} style={{ marginRight: '5px' }}>
+            {letter}
+          </span>
+        ))}
+      </div>
+    );
   }
 }
